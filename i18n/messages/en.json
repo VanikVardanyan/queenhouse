@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "title": "Queen House — Royal escape in Lori mountains",
+    "description": "Two A-frame wooden cabins in Vardablur, Lori, Armenia. Heated jacuzzi, fire pit, Wi-Fi. Call to book."
+  },
+  "nav": {
+    "home": "Home",
+    "houses": "Houses",
+    "amenities": "Amenities",
+    "gallery": "Gallery",
+    "location": "Location",
+    "contact": "Contact",
+    "callToBook": "Call us"
+  },
+  "hero": {
+    "title": "Royal escape in Lori mountains",
+    "subtitle": "Two A-frame cabins · Vardablur, Lori",
+    "primaryCta": "Contact",
+    "secondaryCta": "See houses",
+    "scrollHint": "Scroll down"
+  },
+  "about": {
+    "kicker": "About",
+    "title": "Show must go on. In Lori.",
+    "p1": "Queen House is two A-frame wooden cabins in Vardablur village, Lori province of Armenia. Forests, Dzoraget canyon, and Stepanavan nearby — reasons to come and stay.",
+    "p2": "The name and logo are a quiet tribute to Queen and Freddie Mercury. We believe a great stay should feel like a show where you are the headliner."
+  },
+  "houses": {
+    "kicker": "Our houses",
+    "title": "Two cabins, one character",
+    "house1": {
+      "name": "House №1 — The Crown",
+      "description": "A-frame cabin with heated jacuzzi and forest view."
+    },
+    "house2": {
+      "name": "House №2 — The Mercury",
+      "description": "Intimate cabin with fire pit area and mountain view."
+    },
+    "callCta": "Call to book"
+  },
+  "amenities": {
+    "kicker": "What's included",
+    "title": "Amenities",
+    "items": {
+      "jacuzzi": "Heated jacuzzi",
+      "firepit": "Fire pit & BBQ",
+      "coffee": "Tea & coffee",
+      "wifi": "Wi-Fi",
+      "parking": "Parking"
+    }
+  },
+  "gallery": {
+    "kicker": "Gallery",
+    "title": "Through our eyes",
+    "openImage": "Open photo"
+  },
+  "location": {
+    "kicker": "Location",
+    "title": "Vardablur, Lori",
+    "address": "Vardablur, Lori Province, Armenia",
+    "fromYerevan": "From Yerevan: ~130 km, ~1h 40min",
+    "fromStepanavan": "From Stepanavan: ~15 min",
+    "openInMaps": "Open in Google Maps"
+  },
+  "contact": {
+    "kicker": "Contact",
+    "title": "Book your stay",
+    "comingSoon": "Booking online — coming soon",
+    "calendarHint": "Prices vary by season and house — give us a call, we'll reply fast.",
+    "form": {
+      "name": "Your name",
+      "phone": "Phone",
+      "email": "Email (optional)",
+      "checkIn": "Check-in date",
+      "checkOut": "Check-out date",
+      "guests": "Guests",
+      "message": "Message",
+      "submit": "Send",
+      "submitting": "Sending…",
+      "success": "Thanks, we'll reply within an hour.",
+      "error": "Something went wrong. Please call us."
+    },
+    "phoneLabel": "Phone",
+    "emailLabel": "Email"
+  },
+  "footer": {
+    "rights": "© 2026 Queen House",
+    "languageLabel": "Language",
+    "themeLabel": "Theme"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  }
+}
