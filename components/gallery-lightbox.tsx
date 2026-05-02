@@ -83,6 +83,7 @@ export function GalleryLightbox({
             </button>
             <div className="relative h-full max-h-[85vh] w-full max-w-6xl">
               <Image
+                key={photo.src}
                 src={photo.src}
                 alt=""
                 fill

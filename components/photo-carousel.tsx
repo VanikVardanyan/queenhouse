@@ -19,6 +19,7 @@ export function PhotoCarousel({
   return (
     <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted">
       <Image
+        key={photo.src}
         src={photo.src}
         alt={alt}
         fill

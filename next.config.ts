@@ -1,13 +1,17 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+
+const projectRoot = dirname(fileURLToPath(import.meta.url));
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const config: NextConfig = {
   turbopack: {
-    root: __dirname,
+    root: projectRoot,
   },
-  outputFileTracingRoot: __dirname,
+  outputFileTracingRoot: projectRoot,
   images: {
     formats: ["image/avif", "image/webp"],
   },
