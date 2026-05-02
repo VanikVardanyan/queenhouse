@@ -59,7 +59,7 @@ export function GalleryLightbox({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+              className="absolute right-4 top-4 z-20 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
             >
               <X className="h-5 w-5" />
             </button>
@@ -69,7 +69,7 @@ export function GalleryLightbox({
               onClick={() =>
                 onIndexChange((index - 1 + photos.length) % photos.length)
               }
-              className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
+              className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
@@ -77,7 +77,7 @@ export function GalleryLightbox({
               type="button"
               aria-label="Next"
               onClick={() => onIndexChange((index + 1) % photos.length)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
+              className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
             >
               <ChevronRight className="h-6 w-6" />
             </button>

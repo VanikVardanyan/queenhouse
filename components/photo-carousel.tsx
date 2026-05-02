@@ -34,7 +34,7 @@ export function PhotoCarousel({
             type="button"
             aria-label="Previous"
             onClick={() => setIdx((idx - 1 + photos.length) % photos.length)}
-            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
+            className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -42,11 +42,11 @@ export function PhotoCarousel({
             type="button"
             aria-label="Next"
             onClick={() => setIdx((idx + 1) % photos.length)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
+            className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
-          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
+          <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
             {photos.map((_, i) => (
               <span
                 key={i}
