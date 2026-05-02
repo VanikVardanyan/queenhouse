@@ -75,10 +75,8 @@ export default async function LocaleLayout({
       suppressHydrationWarning
       className={`${cormorant.variable} ${inter.variable} ${notoArmenian.variable}`}
     >
-      <head>
-        <JsonLd locale={locale as "hy" | "ru" | "en"} />
-      </head>
       <body className="min-h-screen bg-background text-foreground">
+        <JsonLd locale={locale as "hy" | "ru" | "en"} />
         <ThemeProvider>
           <NextIntlClientProvider messages={messages}>
             {children}

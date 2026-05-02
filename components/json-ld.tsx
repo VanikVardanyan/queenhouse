@@ -1,3 +1,4 @@
+import Script from "next/script";
 import { SITE } from "@/lib/content";
 
 export function JsonLd({ locale }: { locale: "hy" | "ru" | "en" }) {
@@ -33,9 +34,12 @@ export function JsonLd({ locale }: { locale: "hy" | "ru" | "en" }) {
     ],
   };
   return (
-    <script
+    <Script
+      id={`ld-json-${locale}`}
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
+      strategy="beforeInteractive"
+    >
+      {JSON.stringify(data)}
+    </Script>
   );
 }
