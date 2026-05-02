@@ -1,10 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion, type PanInfo } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { ImageAsset } from "@/lib/images";
+
+const SWIPE_THRESHOLD = 60;
+const SWIPE_VELOCITY = 400;
+
+const slideVariants = {
+  enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0 }),
+};
 
 export function GalleryLightbox({
   photos,
@@ -19,13 +28,22 @@ export function GalleryLightbox({
   onIndexChange: (next: number) => void;
   onClose: () => void;
 }) {
+  const [direction, setDirection] = useState(0);
+
+  const go = useCallback(
+    (delta: 1 | -1) => {
+      setDirection(delta);
+      onIndexChange((index + delta + photos.length) % photos.length);
+    },
+    [index, photos.length, onIndexChange],
+  );
+
   useEffect(() => {
     if (!open) return;
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") onIndexChange((index + 1) % photos.length);
-      if (e.key === "ArrowLeft")
-        onIndexChange((index - 1 + photos.length) % photos.length);
+      if (e.key === "ArrowRight") go(1);
+      if (e.key === "ArrowLeft") go(-1);
     }
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -33,7 +51,30 @@ export function GalleryLightbox({
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [open, photos.length, index, onIndexChange, onClose]);
+  }, [open, go, onClose]);
+
+  // Preload adjacent images so swipes feel instant
+  useEffect(() => {
+    if (!open) return;
+    const adjacent = [
+      photos[(index + 1) % photos.length],
+      photos[(index - 1 + photos.length) % photos.length],
+    ];
+    adjacent.forEach((p) => {
+      if (!p) return;
+      const img = new window.Image();
+      img.src = p.src;
+    });
+  }, [open, index, photos]);
+
+  function handleDragEnd(_: unknown, info: PanInfo) {
+    const swipePower = Math.abs(info.offset.x) * info.velocity.x;
+    if (info.offset.x < -SWIPE_THRESHOLD || swipePower < -SWIPE_VELOCITY) {
+      go(1);
+    } else if (info.offset.x > SWIPE_THRESHOLD || swipePower > SWIPE_VELOCITY) {
+      go(-1);
+    }
+  }
 
   const photo = photos[index];
 
@@ -44,17 +85,10 @@ export function GalleryLightbox({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm"
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 bg-black/95"
         >
-          <motion.div
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            exit={{ scaleY: 0 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            style={{ originY: 0 }}
-            className="relative flex h-full w-full items-center justify-center p-4 md:p-12"
-          >
+          <div className="relative h-full w-full overflow-hidden">
             <button
               type="button"
               onClick={onClose}
@@ -66,37 +100,56 @@ export function GalleryLightbox({
             <button
               type="button"
               aria-label="Previous"
-              onClick={() =>
-                onIndexChange((index - 1 + photos.length) % photos.length)
-              }
-              className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
+              onClick={() => go(-1)}
+              className="absolute left-4 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20 md:block"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
             <button
               type="button"
               aria-label="Next"
-              onClick={() => onIndexChange((index + 1) % photos.length)}
-              className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
+              onClick={() => go(1)}
+              className="absolute right-4 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20 md:block"
             >
               <ChevronRight className="h-6 w-6" />
             </button>
-            <div className="relative h-full max-h-[85vh] w-full max-w-6xl">
-              <Image
+
+            <AnimatePresence initial={false} custom={direction} mode="popLayout">
+              <motion.div
                 key={photo.src}
-                src={photo.src}
-                alt=""
-                fill
-                sizes="100vw"
-                placeholder="blur"
-                blurDataURL={photo.blurDataURL}
-                className="object-contain"
-              />
-            </div>
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-white/70">
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 280, damping: 30 },
+                  opacity: { duration: 0.15 },
+                }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.4}
+                onDragEnd={handleDragEnd}
+                className="absolute inset-0 flex cursor-grab items-center justify-center px-4 py-14 active:cursor-grabbing md:px-20 md:py-16"
+              >
+                <div className="relative h-full w-full max-w-6xl">
+                  <Image
+                    src={photo.src}
+                    alt=""
+                    fill
+                    sizes="100vw"
+                    priority
+                    draggable={false}
+                    className="select-none object-contain"
+                  />
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 text-xs tabular-nums text-white/70">
               {index + 1} / {photos.length}
             </div>
-          </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
