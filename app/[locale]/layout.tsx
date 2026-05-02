@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeScript } from "@/components/theme-script";
+import { JsonLd } from "@/components/json-ld";
 import { SITE } from "@/lib/content";
 import type { ReactNode } from "react";
 
@@ -77,6 +78,7 @@ export default async function LocaleLayout({
     >
       <head>
         <ThemeScript />
+        <JsonLd locale={locale as "hy" | "ru" | "en"} />
       </head>
       <body className="min-h-screen bg-background text-foreground">
         <ThemeProvider>

@@ -14,7 +14,7 @@ export const contactSchema = z.object({
   checkOut: z.string().optional(),
   guests: z.string().optional(),
   message: z.string().max(2000).optional(),
-  website: z.string().max(0).optional(),
+  website: z.string().optional(),
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;
