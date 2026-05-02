@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { contactSchema } from "@/components/contact-form";
+import { contactSchema } from "@/lib/contact-schema";
 import { rateLimit } from "@/lib/rate-limit";
 import { SITE } from "@/lib/content";
 
