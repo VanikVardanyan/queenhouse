@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw photos (run pnpm convert-media to generate optimized assets)
+/media/
+
+# local notes
+*.local.md
