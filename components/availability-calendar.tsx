@@ -13,6 +13,9 @@ export function AvailabilityCalendar() {
   const [house, setHouse] = useState<House>("small");
   const [blocked, setBlocked] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     let cancelled = false;
@@ -52,14 +55,19 @@ export function AvailabilityCalendar() {
         ))}
       </div>
       <div className={loading ? "opacity-50" : ""}>
-        <Calendar
-          mode="single"
-          numberOfMonths={1}
-          disabled={(d) =>
-            d < new Date(new Date().toDateString()) || isDateBlocked(d, blocked)
-          }
-          className="mx-auto"
-        />
+        {mounted ? (
+          <Calendar
+            mode="single"
+            numberOfMonths={1}
+            disabled={(d) =>
+              d < new Date(new Date().toDateString()) ||
+              isDateBlocked(d, blocked)
+            }
+            className="mx-auto"
+          />
+        ) : (
+          <div className="mx-auto h-[300px] w-full" />
+        )}
       </div>
       {loading && (
         <p className="mt-2 text-center text-xs text-muted-foreground">

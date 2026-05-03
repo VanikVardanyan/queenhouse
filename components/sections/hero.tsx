@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { ChevronDown } from "lucide-react";
@@ -12,15 +11,16 @@ export function Hero() {
       id="home"
       className="relative flex min-h-[92vh] w-full items-end overflow-hidden"
     >
-      <Image
-        src={heroImage.src}
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        placeholder="blur"
-        blurDataURL={heroImage.blurDataURL}
-        className="object-cover"
+      <video
+        src="/videos/hero.mp4"
+        poster={heroImage.src}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden
+        className="absolute inset-0 h-full w-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pb-20 pt-32 text-white md:px-8 md:pb-28">
