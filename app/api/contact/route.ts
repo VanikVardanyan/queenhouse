@@ -39,11 +39,15 @@ export async function POST(req: Request) {
   }
 
   const resend = new Resend(apiKey);
-  const { name, phone, email, checkIn, checkOut, guests, message } = parsed.data;
+  const { name, phone, email, house, checkIn, checkOut, guests, message } =
+    parsed.data;
+  const houseLabel =
+    house === "small" ? "Дом для 2 гостей" : house === "large" ? "Дом для 4 гостей" : null;
   const lines: string[] = [
     `Name: ${name}`,
     `Phone: ${phone}`,
     email ? `Email: ${email}` : null,
+    houseLabel ? `House: ${houseLabel}` : null,
     checkIn ? `Check-in: ${checkIn}` : null,
     checkOut ? `Check-out: ${checkOut}` : null,
     guests ? `Guests: ${guests}` : null,
