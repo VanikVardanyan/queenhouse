@@ -16,13 +16,13 @@ export function HouseTabs({
   onChange: (h: House) => void;
 }) {
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-wrap gap-2">
       {HOUSES.map((h) => (
         <button
           key={h}
           type="button"
           onClick={() => onChange(h)}
-          className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+          className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors sm:flex-initial sm:px-4 ${
             value === h
               ? "bg-primary text-primary-foreground"
               : "bg-muted text-muted-foreground hover:bg-muted/70"

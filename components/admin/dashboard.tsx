@@ -16,15 +16,15 @@ export function AdminDashboard({ email }: { email: string }) {
   }
 
   return (
-    <div className="mx-auto max-w-5xl p-6">
-      <header className="flex items-center justify-between border-b border-border pb-4">
-        <h1 className="font-display text-2xl">Queen House Admin</h1>
-        <div className="flex items-center gap-4 text-sm">
-          <span className="text-muted-foreground">{email}</span>
+    <div className="mx-auto max-w-5xl p-4 md:p-6">
+      <header className="flex flex-col items-start gap-3 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="font-display text-xl md:text-2xl">Queen House Admin</h1>
+        <div className="flex w-full items-center justify-between gap-3 text-sm sm:w-auto">
+          <span className="truncate text-muted-foreground">{email}</span>
           <button
             type="button"
             onClick={signOut}
-            className="rounded-md border border-border px-3 py-1.5 hover:bg-muted"
+            className="shrink-0 rounded-md border border-border px-3 py-1.5 hover:bg-muted"
           >
             Ելք
           </button>

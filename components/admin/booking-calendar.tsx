@@ -19,6 +19,18 @@ function findBookingForDate(date: Date, list: Booking[]): Booking | null {
   );
 }
 
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 768px)");
+    setIsDesktop(mql.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+  return isDesktop;
+}
+
 export function BookingCalendar({ house }: { house: House }) {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,6 +39,8 @@ export function BookingCalendar({ house }: { house: House }) {
   const [modalInitial, setModalInitial] = useState<
     { booking?: Booking; range?: { from: string; to: string } } | null
   >(null);
+  const [selected, setSelected] = useState<Date | undefined>();
+  const isDesktop = useIsDesktop();
 
   useEffect(() => setMounted(true), []);
 
@@ -53,6 +67,7 @@ export function BookingCalendar({ house }: { house: House }) {
 
   function onSelect(date: Date | undefined) {
     if (!date) return;
+    setSelected(date);
     const existing = findBookingForDate(date, bookings);
     if (existing) {
       setModalInitial({ booking: existing });
@@ -61,6 +76,11 @@ export function BookingCalendar({ house }: { house: House }) {
       setModalInitial({ range: { from: iso, to: iso } });
     }
     setModalOpen(true);
+  }
+
+  function handleModalChange(next: boolean) {
+    setModalOpen(next);
+    if (!next) setSelected(undefined);
   }
 
   function openAdd() {
@@ -90,6 +110,7 @@ export function BookingCalendar({ house }: { house: House }) {
       };
       await supabase.from("bookings").insert(insert);
     }
+    setSelected(undefined);
     await reload();
   }
 
@@ -98,6 +119,7 @@ export function BookingCalendar({ house }: { house: House }) {
     const supabase = createClient();
     if (!supabase) return;
     await supabase.from("bookings").delete().eq("id", modalInitial.booking.id);
+    setSelected(undefined);
     await reload();
   }
 
@@ -105,29 +127,42 @@ export function BookingCalendar({ house }: { house: House }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <p className="text-sm text-muted-foreground">
-          Սեղմեք ամսաթվի վրա՝ ավելացնելու կամ խմբագրելու համար։ Զբաղված ամսաթվերը նշված են ոսկեգույնով։
+          Սեղմեք ամսաթվի վրա՝ ավելացնելու կամ խմբագրելու համար։
         </p>
         <button
           type="button"
           onClick={openAdd}
-          className="inline-flex shrink-0 items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
+          className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90 md:w-auto"
         >
           <Plus className="h-4 w-4" /> Ավելացնել
         </button>
       </div>
+
+      <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="h-3 w-3 rounded-full bg-primary" />
+          Զբաղված
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="h-3 w-3 rounded-full border border-border bg-background" />
+          Ազատ
+        </span>
+      </div>
+
       {mounted ? (
         <Calendar
           mode="single"
+          selected={selected}
           onSelect={onSelect}
-          numberOfMonths={2}
+          numberOfMonths={isDesktop ? 2 : 1}
           modifiers={{
             booked: (d: Date) => isDateBlocked(d, blocked),
           }}
           modifiersClassNames={{
             booked:
-              "bg-primary/30 text-primary-foreground font-semibold rounded-md",
+              "!bg-primary !text-primary-foreground !font-bold !rounded-full",
           }}
           className="mx-auto"
         />
@@ -139,7 +174,7 @@ export function BookingCalendar({ house }: { house: House }) {
       )}
       <BookingModal
         open={modalOpen}
-        onOpenChange={setModalOpen}
+        onOpenChange={handleModalChange}
         initial={modalInitial}
         onSave={handleSave}
         onDelete={modalInitial?.booking ? handleDelete : undefined}
