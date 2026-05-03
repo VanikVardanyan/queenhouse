@@ -17,7 +17,7 @@ export function LoginForm() {
     const supabase = createClient();
     if (!supabase) {
       setStatus("error");
-      setErrorMsg("Supabase не настроен. Проверьте env-переменные в Vercel.");
+      setErrorMsg("Supabase կարգավորված չէ։ Ստուգեք env-փոփոխականները Vercel-ում։");
       return;
     }
     const email = `${login.trim().toLowerCase()}@${ADMIN_EMAIL_DOMAIN}`;
@@ -27,7 +27,7 @@ export function LoginForm() {
     });
     if (error) {
       setStatus("error");
-      setErrorMsg("Неверный логин или пароль");
+      setErrorMsg("Սխալ մուտքանուն կամ գաղտնաբառ");
       return;
     }
     window.location.reload();
@@ -36,10 +36,10 @@ export function LoginForm() {
   return (
     <div className="mx-auto mt-24 max-w-sm rounded-xl border border-border bg-card p-6 shadow-sm">
       <h1 className="font-display text-2xl font-medium">Queen House Admin</h1>
-      <p className="mt-1 text-sm text-muted-foreground">Войдите в админку.</p>
+      <p className="mt-1 text-sm text-muted-foreground">Մուտք գործեք ադմինի վահանակ։</p>
       <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-4">
         <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium">Логин</span>
+          <span className="text-sm font-medium">Մուտքանուն</span>
           <input
             type="text"
             required
@@ -50,7 +50,7 @@ export function LoginForm() {
           />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium">Пароль</span>
+          <span className="text-sm font-medium">Գաղտնաբառ</span>
           <input
             type="password"
             required
@@ -65,7 +65,7 @@ export function LoginForm() {
           disabled={status === "sending"}
           className="h-11 rounded-md bg-primary text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
         >
-          {status === "sending" ? "Входим…" : "Войти"}
+          {status === "sending" ? "Մուտք գործում ենք…" : "Մուտք գործել"}
         </button>
         {status === "error" && (
           <p className="text-sm text-red-500">{errorMsg}</p>

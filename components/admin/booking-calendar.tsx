@@ -105,16 +105,16 @@ export function BookingCalendar({ house }: { house: House }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
-          Кликни по дате — откроется модалка для добавления или редактирования брони. Занятые даты подсвечены золотым.
+          Սեղմեք ամսաթվի վրա՝ ավելացնելու կամ խմբագրելու համար։ Զբաղված ամսաթվերը նշված են ոսկեգույնով։
         </p>
         <button
           type="button"
           onClick={openAdd}
-          className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
+          className="inline-flex shrink-0 items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
         >
-          <Plus className="h-4 w-4" /> Добавить
+          <Plus className="h-4 w-4" /> Ավելացնել
         </button>
       </div>
       {mounted ? (
@@ -135,7 +135,7 @@ export function BookingCalendar({ house }: { house: House }) {
         <div className="mx-auto h-[400px] w-full max-w-2xl" />
       )}
       {loading && (
-        <p className="text-center text-sm text-muted-foreground">Загрузка…</p>
+        <p className="text-center text-sm text-muted-foreground">Բեռնում…</p>
       )}
       <BookingModal
         open={modalOpen}

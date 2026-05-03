@@ -57,7 +57,7 @@ export function BookingModal({
 
   async function handleDelete() {
     if (!onDelete) return;
-    if (!confirm("Удалить бронь?")) return;
+    if (!confirm("Ջնջե՞լ ամրագրումը։")) return;
     setBusy(true);
     await onDelete();
     setBusy(false);
@@ -69,12 +69,12 @@ export function BookingModal({
       <DialogContent className="max-w-sm">
         <DialogHeader>
           <DialogTitle>
-            {isEdit ? "Изменить бронь" : "Добавить бронь"}
+            {isEdit ? "Փոխել ամրագրումը" : "Ավելացնել ամրագրում"}
           </DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">Заезд</span>
+            <span className="text-sm font-medium">Մուտքի ամսաթիվ</span>
             <input
               type="date"
               value={start}
@@ -83,7 +83,7 @@ export function BookingModal({
             />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">Выезд</span>
+            <span className="text-sm font-medium">Ելքի ամսաթիվ</span>
             <input
               type="date"
               value={end}
@@ -92,12 +92,12 @@ export function BookingModal({
             />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">Заметка</span>
+            <span className="text-sm font-medium">Նշում</span>
             <textarea
               rows={3}
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              placeholder="Имя гостя, телефон, аванс…"
+              placeholder="Հյուրի անուն, հեռախոս, կանխավճար…"
               className="rounded-md border border-border bg-background p-3"
             />
           </label>
@@ -108,7 +108,7 @@ export function BookingModal({
               disabled={busy || !start || !end}
               className="flex-1 h-11 rounded-md bg-primary text-sm font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-60"
             >
-              {busy ? "Сохраняем…" : "Сохранить"}
+              {busy ? "Պահվում է…" : "Պահպանել"}
             </button>
             {isEdit && onDelete && (
               <button
@@ -117,7 +117,7 @@ export function BookingModal({
                 disabled={busy}
                 className="h-11 rounded-md border border-red-500/50 px-4 text-sm font-medium text-red-500 hover:bg-red-500/10 disabled:opacity-60"
               >
-                Удалить
+                Ջնջել
               </button>
             )}
           </div>

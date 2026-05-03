@@ -26,7 +26,7 @@ export function AdminDashboard({ email }: { email: string }) {
             onClick={signOut}
             className="rounded-md border border-border px-3 py-1.5 hover:bg-muted"
           >
-            Выйти
+            Ելք
           </button>
         </div>
       </header>

@@ -4,8 +4,8 @@ import type { House } from "@/lib/supabase/types";
 import { HOUSES } from "@/lib/supabase/types";
 
 const LABELS: Record<House, string> = {
-  small: "Дом для 2 гостей",
-  large: "Дом для 4 гостей",
+  small: "Տուն 2 հյուրի համար",
+  large: "Տուն 4 հյուրի համար",
 };
 
 export function HouseTabs({
