@@ -62,8 +62,13 @@
   "contact": {
     "kicker": "Contact",
     "title": "Book your stay",
-    "comingSoon": "Booking online — coming soon",
-    "calendarHint": "Prices vary by season and house — give us a call, we'll reply fast.",
+    "availability": {
+      "smallHouse": "Cabin for 2 guests",
+      "largeHouse": "Cabin for 4 guests",
+      "booked": "Booked",
+      "loading": "Loading…"
+    },
+    "calendarHint": "Pick a date — call us to book.",
     "form": {
       "name": "Your name",
       "phone": "Phone",

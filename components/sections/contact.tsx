@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Phone, Mail } from "lucide-react";
-import { DisabledBookingCalendar } from "@/components/disabled-booking-calendar";
+import { AvailabilityCalendar } from "@/components/availability-calendar";
 import { ContactForm } from "@/components/contact-form";
 import { SITE } from "@/lib/content";
 
@@ -23,7 +23,7 @@ export function Contact() {
 
         <div className="grid gap-10 lg:grid-cols-2">
           <div className="flex flex-col gap-6">
-            <DisabledBookingCalendar />
+            <AvailabilityCalendar />
             <p className="text-sm text-muted-foreground">{t("calendarHint")}</p>
 
             <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-6">
