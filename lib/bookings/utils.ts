@@ -11,11 +11,15 @@ export function toLocalIso(d: Date): string {
   return `${year}-${month}-${day}`;
 }
 
+/**
+ * Yields nights between check-in and check-out, EXCLUDING check-out day.
+ * Hotel semantics: a booking 2 → 5 covers nights 2, 3, 4. The new guest
+ * can check in on the afternoon of the 5th, so the 5th is not blocked.
+ */
 function* eachDay(start: string, end: string): Generator<string> {
-  // Parse DB strings as local noon — avoids DST and timezone day shifts.
   const cursor = new Date(`${start}T12:00:00`);
   const last = new Date(`${end}T12:00:00`);
-  while (cursor <= last) {
+  while (cursor < last) {
     yield toLocalIso(cursor);
     cursor.setDate(cursor.getDate() + 1);
   }

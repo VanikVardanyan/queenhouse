@@ -105,6 +105,9 @@ export function BookingModal({
               onChange={(e) => setEnd(e.target.value)}
               className="h-10 rounded-md border border-border bg-background px-3"
             />
+            <span className="text-xs text-muted-foreground">
+              Ելքի օրը մինչև 12:00 — նոր հյուրը կարող է գալ ժամը 14:00-ից։
+            </span>
           </label>
           <label className="flex flex-col gap-1.5">
             <span className="text-sm font-medium">Նշում</span>

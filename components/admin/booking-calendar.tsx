@@ -10,8 +10,9 @@ import { BookingModal, type BookingDraft } from "./booking-modal";
 
 function findBookingForDate(date: Date, list: Booking[]): Booking | null {
   const iso = toLocalIso(date);
+  // Check-out day is NOT blocked — new guest can arrive that afternoon.
   return (
-    list.find((b) => b.start_date <= iso && b.end_date >= iso) ?? null
+    list.find((b) => b.start_date <= iso && b.end_date > iso) ?? null
   );
 }
 
@@ -39,6 +40,12 @@ export function BookingCalendar({ house }: { house: House }) {
   const isDesktop = useIsDesktop();
 
   useEffect(() => setMounted(true), []);
+
+  function nextDayIso(iso: string): string {
+    const d = new Date(`${iso}T12:00:00`);
+    d.setDate(d.getDate() + 1);
+    return toLocalIso(d);
+  }
 
   const reload = useCallback(async () => {
     setLoading(true);
@@ -69,7 +76,7 @@ export function BookingCalendar({ house }: { house: House }) {
       setModalInitial({ booking: existing });
     } else {
       const iso = toLocalIso(date);
-      setModalInitial({ range: { from: iso, to: iso } });
+      setModalInitial({ range: { from: iso, to: nextDayIso(iso) } });
     }
     setModalOpen(true);
   }
@@ -81,7 +88,7 @@ export function BookingCalendar({ house }: { house: House }) {
 
   function openAdd() {
     const today = toLocalIso(new Date());
-    setModalInitial({ range: { from: today, to: today } });
+    setModalInitial({ range: { from: today, to: nextDayIso(today) } });
     setModalOpen(true);
   }
 
