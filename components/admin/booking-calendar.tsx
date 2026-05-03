@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { Plus } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { createClient } from "@/lib/supabase/client";
 import { bookedDateSet, isDateBlocked } from "@/lib/bookings/utils";
@@ -26,7 +27,6 @@ export function BookingCalendar({ house }: { house: House }) {
   const [modalInitial, setModalInitial] = useState<
     { booking?: Booking; range?: { from: string; to: string } } | null
   >(null);
-  const [range, setRange] = useState<{ from?: Date; to?: Date }>({});
 
   useEffect(() => setMounted(true), []);
 
@@ -51,26 +51,22 @@ export function BookingCalendar({ house }: { house: House }) {
     void reload();
   }, [reload]);
 
-  function onSelect(value: { from?: Date; to?: Date } | undefined) {
-    if (!value?.from) return;
-
-    if (!value.to || toIso(value.from) === toIso(value.to)) {
-      const existing = findBookingForDate(value.from, bookings);
-      if (existing) {
-        setModalInitial({ booking: existing });
-        setModalOpen(true);
-        setRange({});
-        return;
-      }
+  function onSelect(date: Date | undefined) {
+    if (!date) return;
+    const existing = findBookingForDate(date, bookings);
+    if (existing) {
+      setModalInitial({ booking: existing });
+    } else {
+      const iso = toIso(date);
+      setModalInitial({ range: { from: iso, to: iso } });
     }
+    setModalOpen(true);
+  }
 
-    setRange(value);
-    if (value.from && value.to) {
-      setModalInitial({
-        range: { from: toIso(value.from), to: toIso(value.to) },
-      });
-      setModalOpen(true);
-    }
+  function openAdd() {
+    const today = toIso(new Date());
+    setModalInitial({ range: { from: today, to: today } });
+    setModalOpen(true);
   }
 
   async function handleSave(draft: BookingDraft) {
@@ -94,7 +90,6 @@ export function BookingCalendar({ house }: { house: House }) {
       };
       await supabase.from("bookings").insert(insert);
     }
-    setRange({});
     await reload();
   }
 
@@ -103,7 +98,6 @@ export function BookingCalendar({ house }: { house: House }) {
     const supabase = createClient();
     if (!supabase) return;
     await supabase.from("bookings").delete().eq("id", modalInitial.booking.id);
-    setRange({});
     await reload();
   }
 
@@ -111,17 +105,29 @@ export function BookingCalendar({ house }: { house: House }) {
 
   return (
     <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">
+          Кликни по дате — откроется модалка для добавления или редактирования брони. Занятые даты подсвечены золотым.
+        </p>
+        <button
+          type="button"
+          onClick={openAdd}
+          className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
+        >
+          <Plus className="h-4 w-4" /> Добавить
+        </button>
+      </div>
       {mounted ? (
         <Calendar
-          mode="range"
-          selected={range.from ? { from: range.from, to: range.to } : undefined}
+          mode="single"
           onSelect={onSelect}
           numberOfMonths={2}
           modifiers={{
             booked: (d: Date) => isDateBlocked(d, blocked),
           }}
           modifiersClassNames={{
-            booked: "bg-primary/30 text-primary-foreground font-semibold",
+            booked:
+              "bg-primary/30 text-primary-foreground font-semibold rounded-md",
           }}
           className="mx-auto"
         />
