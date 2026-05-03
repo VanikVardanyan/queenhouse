@@ -49,4 +49,4 @@ export const heroImage: ImageAsset = images[0] ?? fallback;
 export const aboutImage: ImageAsset = getImage("img-5209");
 export const house1Photos: ImageAsset[] = images.slice(2, 8);
 export const house2Photos: ImageAsset[] = images.slice(8, 14);
-export const galleryImages: ImageAsset[] = images.slice(0, 18);
+export const galleryImages: ImageAsset[] = images;
