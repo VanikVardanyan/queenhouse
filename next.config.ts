@@ -18,6 +18,20 @@ const config: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
   },
+  async redirects() {
+    return [
+      {
+        source: "/:locale(hy|ru|en)/admin/:path*",
+        destination: "/admin/:path*",
+        permanent: false,
+      },
+      {
+        source: "/:locale(hy|ru|en)/admin",
+        destination: "/admin",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(config);
