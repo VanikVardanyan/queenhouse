@@ -47,6 +47,24 @@ const fallback = images[0]!;
 
 export const heroImage: ImageAsset = images[0] ?? fallback;
 export const aboutImage: ImageAsset = getImage("img-5209");
-export const house1Photos: ImageAsset[] = images.slice(2, 8);
-export const house2Photos: ImageAsset[] = images.slice(8, 14);
+
+// Curated order for the Houses carousel.
+// IMG_4858.DNG is in /media but not yet converted (export manually, then re-run pnpm convert-media).
+export const housesPhotos: ImageAsset[] = [
+  "img-5209",
+  "img-6729",
+  "img-6755",
+  "img-5389",
+  "img-5384",
+  "img-5380",
+  "img-6769",
+  "img-5379",
+  "img-5357",
+  "img-5069",
+  "img-9415",
+  "img-5057",
+  "img-4861",
+  "img-5020",
+].map(getImage);
+
 export const galleryImages: ImageAsset[] = images;

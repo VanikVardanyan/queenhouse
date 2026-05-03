@@ -1,12 +1,11 @@
 import { useTranslations } from "next-intl";
 import { Phone, Users } from "lucide-react";
 import { PhotoCarousel } from "@/components/photo-carousel";
-import { house1Photos, house2Photos } from "@/lib/images";
+import { housesPhotos } from "@/lib/images";
 import { SITE } from "@/lib/content";
 
 export function Houses() {
   const t = useTranslations("houses");
-  const photos = [...house1Photos, ...house2Photos];
 
   return (
     <section
@@ -23,7 +22,7 @@ export function Houses() {
           </h2>
         </div>
 
-        <PhotoCarousel photos={photos} alt={t("title")} />
+        <PhotoCarousel photos={housesPhotos} alt={t("title")} />
 
         <p className="mt-10 max-w-2xl text-lg text-muted-foreground">
           {t("description")}
