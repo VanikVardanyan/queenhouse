@@ -1,17 +1,23 @@
 import type { Booking } from "@/lib/supabase/types";
 
-const ISO_DATE_LEN = 10;
-
-function toIsoDate(d: Date): string {
-  return d.toISOString().slice(0, ISO_DATE_LEN);
+/**
+ * Convert a Date to a local YYYY-MM-DD string (no timezone shift).
+ * `toISOString()` would convert to UTC and shift the day for non-UTC users.
+ */
+export function toLocalIso(d: Date): string {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 function* eachDay(start: string, end: string): Generator<string> {
-  const cursor = new Date(`${start}T00:00:00Z`);
-  const last = new Date(`${end}T00:00:00Z`);
+  // Parse DB strings as local noon — avoids DST and timezone day shifts.
+  const cursor = new Date(`${start}T12:00:00`);
+  const last = new Date(`${end}T12:00:00`);
   while (cursor <= last) {
-    yield toIsoDate(cursor);
-    cursor.setUTCDate(cursor.getUTCDate() + 1);
+    yield toLocalIso(cursor);
+    cursor.setDate(cursor.getDate() + 1);
   }
 }
 
@@ -26,5 +32,5 @@ export function bookedDateSet(bookings: Booking[]): Set<string> {
 }
 
 export function isDateBlocked(date: Date, set: Set<string>): boolean {
-  return set.has(toIsoDate(date));
+  return set.has(toLocalIso(date));
 }

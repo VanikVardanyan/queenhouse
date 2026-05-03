@@ -4,16 +4,12 @@ import { useEffect, useState, useCallback } from "react";
 import { Plus } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { createClient } from "@/lib/supabase/client";
-import { bookedDateSet, isDateBlocked } from "@/lib/bookings/utils";
+import { bookedDateSet, isDateBlocked, toLocalIso } from "@/lib/bookings/utils";
 import type { Booking, BookingInsert, House } from "@/lib/supabase/types";
 import { BookingModal, type BookingDraft } from "./booking-modal";
 
-function toIso(d: Date): string {
-  return d.toISOString().slice(0, 10);
-}
-
 function findBookingForDate(date: Date, list: Booking[]): Booking | null {
-  const iso = toIso(date);
+  const iso = toLocalIso(date);
   return (
     list.find((b) => b.start_date <= iso && b.end_date >= iso) ?? null
   );
@@ -72,7 +68,7 @@ export function BookingCalendar({ house }: { house: House }) {
     if (existing) {
       setModalInitial({ booking: existing });
     } else {
-      const iso = toIso(date);
+      const iso = toLocalIso(date);
       setModalInitial({ range: { from: iso, to: iso } });
     }
     setModalOpen(true);
@@ -84,7 +80,7 @@ export function BookingCalendar({ house }: { house: House }) {
   }
 
   function openAdd() {
-    const today = toIso(new Date());
+    const today = toLocalIso(new Date());
     setModalInitial({ range: { from: today, to: today } });
     setModalOpen(true);
   }
