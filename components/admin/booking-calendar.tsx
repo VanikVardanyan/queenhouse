@@ -33,6 +33,11 @@ export function BookingCalendar({ house }: { house: House }) {
   const reload = useCallback(async () => {
     setLoading(true);
     const supabase = createClient();
+    if (!supabase) {
+      setBookings([]);
+      setLoading(false);
+      return;
+    }
     const { data } = await supabase
       .from("bookings")
       .select("*")
@@ -70,6 +75,7 @@ export function BookingCalendar({ house }: { house: House }) {
 
   async function handleSave(draft: BookingDraft) {
     const supabase = createClient();
+    if (!supabase) return;
     if (modalInitial?.booking) {
       await supabase
         .from("bookings")
@@ -95,6 +101,7 @@ export function BookingCalendar({ house }: { house: House }) {
   async function handleDelete() {
     if (!modalInitial?.booking) return;
     const supabase = createClient();
+    if (!supabase) return;
     await supabase.from("bookings").delete().eq("id", modalInitial.booking.id);
     setRange({});
     await reload();

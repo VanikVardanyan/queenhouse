@@ -15,6 +15,11 @@ export function LoginForm() {
     setStatus("sending");
     setErrorMsg(null);
     const supabase = createClient();
+    if (!supabase) {
+      setStatus("error");
+      setErrorMsg("Supabase не настроен. Проверьте env-переменные в Vercel.");
+      return;
+    }
     const redirectTo = `${process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin}/admin/auth/callback`;
     const { error } = await supabase.auth.signInWithOtp({
       email,

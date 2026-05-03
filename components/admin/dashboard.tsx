@@ -11,7 +11,7 @@ export function AdminDashboard({ email }: { email: string }) {
 
   async function signOut() {
     const supabase = createClient();
-    await supabase.auth.signOut();
+    if (supabase) await supabase.auth.signOut();
     window.location.href = "/admin";
   }
 

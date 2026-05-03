@@ -21,6 +21,11 @@ export function AvailabilityCalendar() {
     let cancelled = false;
     setLoading(true);
     const supabase = createClient();
+    if (!supabase) {
+      setBlocked(new Set());
+      setLoading(false);
+      return;
+    }
     supabase
       .from("bookings")
       .select("*")
