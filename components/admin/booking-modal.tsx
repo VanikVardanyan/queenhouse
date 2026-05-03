@@ -32,6 +32,7 @@ export function BookingModal({
   const [end, setEnd] = useState("");
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!initial) return;
@@ -50,18 +51,32 @@ export function BookingModal({
 
   async function handleSave() {
     setBusy(true);
-    await onSave({ start_date: start, end_date: end, note });
-    setBusy(false);
-    onOpenChange(false);
+    setError(null);
+    try {
+      await onSave({ start_date: start, end_date: end, note });
+      setBusy(false);
+      onOpenChange(false);
+    } catch (err) {
+      setBusy(false);
+      const msg = err instanceof Error ? err.message : "Չհաջողվեց պահպանել";
+      setError(msg);
+    }
   }
 
   async function handleDelete() {
     if (!onDelete) return;
     if (!confirm("Ջնջե՞լ ամրագրումը։")) return;
     setBusy(true);
-    await onDelete();
-    setBusy(false);
-    onOpenChange(false);
+    setError(null);
+    try {
+      await onDelete();
+      setBusy(false);
+      onOpenChange(false);
+    } catch (err) {
+      setBusy(false);
+      const msg = err instanceof Error ? err.message : "Չհաջողվեց ջնջել";
+      setError(msg);
+    }
   }
 
   return (
@@ -101,6 +116,11 @@ export function BookingModal({
               className="rounded-md border border-border bg-background p-3"
             />
           </label>
+          {error && (
+            <p className="rounded-md bg-red-500/10 p-3 text-sm text-red-500">
+              {error}
+            </p>
+          )}
           <div className="mt-2 flex gap-2">
             <button
               type="button"

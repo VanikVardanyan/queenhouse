@@ -91,9 +91,9 @@ export function BookingCalendar({ house }: { house: House }) {
 
   async function handleSave(draft: BookingDraft) {
     const supabase = createClient();
-    if (!supabase) return;
+    if (!supabase) throw new Error("Supabase կարգավորված չէ");
     if (modalInitial?.booking) {
-      await supabase
+      const { error } = await supabase
         .from("bookings")
         .update({
           start_date: draft.start_date,
@@ -101,6 +101,7 @@ export function BookingCalendar({ house }: { house: House }) {
           note: draft.note || null,
         })
         .eq("id", modalInitial.booking.id);
+      if (error) throw error;
     } else {
       const insert: BookingInsert = {
         house,
@@ -108,7 +109,8 @@ export function BookingCalendar({ house }: { house: House }) {
         end_date: draft.end_date,
         note: draft.note || null,
       };
-      await supabase.from("bookings").insert(insert);
+      const { error } = await supabase.from("bookings").insert(insert);
+      if (error) throw error;
     }
     setSelected(undefined);
     await reload();
@@ -117,8 +119,12 @@ export function BookingCalendar({ house }: { house: House }) {
   async function handleDelete() {
     if (!modalInitial?.booking) return;
     const supabase = createClient();
-    if (!supabase) return;
-    await supabase.from("bookings").delete().eq("id", modalInitial.booking.id);
+    if (!supabase) throw new Error("Supabase կարգավորված չէ");
+    const { error } = await supabase
+      .from("bookings")
+      .delete()
+      .eq("id", modalInitial.booking.id);
+    if (error) throw error;
     setSelected(undefined);
     await reload();
   }
