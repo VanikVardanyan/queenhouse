@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { ADMIN_EMAIL_DOMAIN } from "@/lib/supabase/types";
 
 export function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
-    "idle",
-  );
+  const [login, setLogin] = useState("admin");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   async function onSubmit(e: React.FormEvent) {
@@ -20,49 +20,55 @@ export function LoginForm() {
       setErrorMsg("Supabase не настроен. Проверьте env-переменные в Vercel.");
       return;
     }
-    const redirectTo = `${process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin}/admin/auth/callback`;
-    const { error } = await supabase.auth.signInWithOtp({
+    const email = `${login.trim().toLowerCase()}@${ADMIN_EMAIL_DOMAIN}`;
+    const { error } = await supabase.auth.signInWithPassword({
       email,
-      options: { emailRedirectTo: redirectTo },
+      password,
     });
     if (error) {
       setStatus("error");
-      setErrorMsg(error.message);
+      setErrorMsg("Неверный логин или пароль");
       return;
     }
-    setStatus("sent");
+    window.location.reload();
   }
 
   return (
     <div className="mx-auto mt-24 max-w-sm rounded-xl border border-border bg-card p-6 shadow-sm">
       <h1 className="font-display text-2xl font-medium">Queen House Admin</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Введите email для получения ссылки.
-      </p>
+      <p className="mt-1 text-sm text-muted-foreground">Войдите в админку.</p>
       <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-4">
-        <input
-          type="email"
-          required
-          autoComplete="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="email"
-          className="h-11 w-full rounded-md border border-border bg-background px-3 text-foreground"
-        />
+        <label className="flex flex-col gap-1.5">
+          <span className="text-sm font-medium">Логин</span>
+          <input
+            type="text"
+            required
+            autoComplete="username"
+            value={login}
+            onChange={(e) => setLogin(e.target.value)}
+            className="h-11 w-full rounded-md border border-border bg-background px-3 text-foreground"
+          />
+        </label>
+        <label className="flex flex-col gap-1.5">
+          <span className="text-sm font-medium">Пароль</span>
+          <input
+            type="password"
+            required
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="h-11 w-full rounded-md border border-border bg-background px-3 text-foreground"
+          />
+        </label>
         <button
           type="submit"
           disabled={status === "sending"}
           className="h-11 rounded-md bg-primary text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
         >
-          {status === "sending" ? "Отправляем…" : "Отправить ссылку"}
+          {status === "sending" ? "Входим…" : "Войти"}
         </button>
-        {status === "sent" && (
-          <p className="text-sm text-primary">
-            Ссылка отправлена на {email}. Откройте письмо и нажмите ссылку.
-          </p>
-        )}
         {status === "error" && (
-          <p className="text-sm text-red-500">Ошибка: {errorMsg}</p>
+          <p className="text-sm text-red-500">{errorMsg}</p>
         )}
       </form>
     </div>

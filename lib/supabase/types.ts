@@ -24,4 +24,7 @@ export type BookingUpdate = {
 
 export const HOUSES: House[] = ["small", "large"];
 
-export const ADMIN_EMAIL = "queenhouse.arm@gmail.com";
+// Internal "fake email" used for Supabase Auth — owner never sees this.
+// Login form maps username → `${username}@queenhouse.am`.
+export const ADMIN_EMAIL_DOMAIN = "queenhouse.am";
+export const ADMIN_EMAIL = `admin@${ADMIN_EMAIL_DOMAIN}`;
