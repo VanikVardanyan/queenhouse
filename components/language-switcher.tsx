@@ -14,8 +14,9 @@ export function LanguageSwitcher() {
   function switchTo(next: Locale) {
     const segments = pathname.split("/");
     segments[1] = next;
-    const target = segments.join("/") || `/${next}`;
-    router.push(target);
+    const path = segments.join("/") || `/${next}`;
+    const hash = typeof window !== "undefined" ? window.location.hash : "";
+    router.push(path + hash, { scroll: false });
   }
 
   return (
