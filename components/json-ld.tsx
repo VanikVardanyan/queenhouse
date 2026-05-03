@@ -1,4 +1,3 @@
-import Script from "next/script";
 import { SITE } from "@/lib/content";
 
 export function JsonLd({ locale }: { locale: "hy" | "ru" | "en" }) {
@@ -33,13 +32,13 @@ export function JsonLd({ locale }: { locale: "hy" | "ru" | "en" }) {
       { "@type": "LocationFeatureSpecification", name: "Parking", value: true },
     ],
   };
+  const safe = JSON.stringify(data).replace(/</g, "\\u003c");
   return (
-    <Script
-      id={`ld-json-${locale}`}
-      type="application/ld+json"
-      strategy="beforeInteractive"
-    >
-      {JSON.stringify(data)}
-    </Script>
+    <div
+      hidden
+      dangerouslySetInnerHTML={{
+        __html: `<script type="application/ld+json">${safe}</script>`,
+      }}
+    />
   );
 }
