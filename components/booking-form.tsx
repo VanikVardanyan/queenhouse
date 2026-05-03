@@ -33,6 +33,7 @@ function rangeIsClean(
 
 export function BookingForm() {
   const t = useTranslations("contact.form");
+  const tHouse = useTranslations("contact.availability");
   const [house, setHouse] = useState<House>("small");
   const [blocked, setBlocked] = useState<Set<string>>(new Set());
   const [calendarLoading, setCalendarLoading] = useState(true);
@@ -180,9 +181,7 @@ export function BookingForm() {
                   : "border-border bg-card text-foreground hover:bg-muted"
               }`}
             >
-              {t(
-                `availability.${h === "small" ? "smallHouse" : "largeHouse"}` as "availability.smallHouse" | "availability.largeHouse",
-              )}
+              {tHouse(h === "small" ? "smallHouse" : "largeHouse")}
             </button>
           ))}
         </div>
