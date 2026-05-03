@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter, Noto_Sans_Armenian } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  Inter,
+  Noto_Sans_Armenian,
+  Noto_Serif_Armenian,
+} from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -21,6 +26,11 @@ const inter = Inter({
 const notoArmenian = Noto_Sans_Armenian({
   subsets: ["armenian"],
   variable: "--font-noto-armenian",
+});
+const notoArmenianSerif = Noto_Serif_Armenian({
+  subsets: ["armenian"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-noto-armenian-serif",
 });
 
 export function generateStaticParams() {
@@ -73,7 +83,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       suppressHydrationWarning
-      className={`${cormorant.variable} ${inter.variable} ${notoArmenian.variable}`}
+      className={`${cormorant.variable} ${inter.variable} ${notoArmenian.variable} ${notoArmenianSerif.variable}`}
     >
       <body className="min-h-screen bg-background text-foreground">
         <JsonLd locale={locale as "hy" | "ru" | "en"} />

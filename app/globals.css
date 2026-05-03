@@ -122,6 +122,11 @@ html {
   :lang(hy) {
     font-family: var(--font-noto-armenian), var(--font-inter), system-ui, sans-serif;
   }
+  :lang(hy) .font-display,
+  :lang(hy) h1,
+  :lang(hy) h2 {
+    font-family: var(--font-noto-armenian-serif), var(--font-cormorant), serif;
+  }
   ::selection {
     background: var(--primary);
     color: var(--primary-foreground);
