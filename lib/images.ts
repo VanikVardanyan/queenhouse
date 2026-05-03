@@ -14,15 +14,19 @@ const LOGO_SLUG = "image-14-02-25-01-51";
 
 function buildAsset(entry: (typeof manifest)[number]): ImageAsset {
   const base = `/images/optimized/${entry.slug}`;
+  // The convert script only generates a width if the source is at least that big
+  // (400 is always generated). Pick available widths so URLs never 404.
+  const availableWidths = WIDTHS.filter((w) => w === 400 || entry.width >= w);
+  const srcWidth = availableWidths.includes(1200) ? 1200 : 400;
   return {
     slug: entry.slug,
     width: entry.width,
     height: entry.height,
     blurDataURL: entry.blurDataURL,
-    src: `${base}-1200.webp`,
+    src: `${base}-${srcWidth}.webp`,
     srcSet: {
-      avif: WIDTHS.map((w) => `${base}-${w}.avif ${w}w`).join(", "),
-      webp: WIDTHS.map((w) => `${base}-${w}.webp ${w}w`).join(", "),
+      avif: availableWidths.map((w) => `${base}-${w}.avif ${w}w`).join(", "),
+      webp: availableWidths.map((w) => `${base}-${w}.webp ${w}w`).join(", "),
     },
   };
 }
