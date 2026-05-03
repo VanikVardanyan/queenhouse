@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/theme-provider";
 import { useTranslations, useLocale } from "next-intl";
 import { useEffect, useState } from "react";
 import { Phone, Mail, MapPin } from "lucide-react";
@@ -11,11 +11,11 @@ import { SITE } from "@/lib/content";
 export function Footer() {
   const t = useTranslations("footer");
   const locale = useLocale() as "hy" | "ru" | "en";
-  const { resolvedTheme } = useTheme();
+  const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const logoSrc =
-    mounted && resolvedTheme === "light" ? "/logo-light.jpeg" : "/logo-dark.jpeg";
+    mounted && theme === "light" ? "/logo-light.jpeg" : "/logo-dark.jpeg";
 
   return (
     <footer className="bg-muted/30 py-14">

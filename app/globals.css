@@ -106,6 +106,8 @@
 
 html {
   color-scheme: light dark;
+}
+html[data-scroll-behavior="smooth"] {
   scroll-behavior: smooth;
 }
 

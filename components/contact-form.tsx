@@ -1,22 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { contactSchema, type ContactInput } from "@/lib/contact-schema";
+import { z } from "zod";
+import type { ContactInput } from "@/lib/contact-schema";
 
 export function ContactForm() {
   const t = useTranslations("contact.form");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">(
     "idle",
   );
+
+  const schema = useMemo(
+    () =>
+      z.object({
+        name: z
+          .string()
+          .min(1, t("errors.required"))
+          .max(100, t("errors.tooLong")),
+        phone: z
+          .string()
+          .min(5, t("errors.phoneTooShort"))
+          .max(40, t("errors.tooLong")),
+        email: z
+          .string()
+          .email(t("errors.invalidEmail"))
+          .optional()
+          .or(z.literal("")),
+        checkIn: z.string().optional(),
+        checkOut: z.string().optional(),
+        guests: z.string().optional(),
+        message: z.string().max(2000, t("errors.tooLong")).optional(),
+        website: z.string().optional(),
+      }),
+    [t],
+  );
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ContactInput>({ resolver: zodResolver(contactSchema) });
+  } = useForm<ContactInput>({ resolver: zodResolver(schema) });
 
   async function onSubmit(values: ContactInput) {
     setStatus("submitting");

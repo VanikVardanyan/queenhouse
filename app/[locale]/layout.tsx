@@ -10,6 +10,7 @@ import { getMessages, getTranslations, setRequestLocale } from "next-intl/server
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeInit } from "@/components/theme-init";
 import { JsonLd } from "@/components/json-ld";
 import { SITE } from "@/lib/content";
 import type { ReactNode } from "react";
@@ -82,10 +83,12 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${cormorant.variable} ${inter.variable} ${notoArmenian.variable} ${notoArmenianSerif.variable}`}
     >
       <body className="min-h-screen bg-background text-foreground">
+        <ThemeInit />
         <JsonLd locale={locale as "hy" | "ru" | "en"} />
         <ThemeProvider>
           <NextIntlClientProvider messages={messages}>

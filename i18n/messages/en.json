@@ -75,7 +75,13 @@
       "submit": "Send",
       "submitting": "Sending…",
       "success": "Thanks, we'll reply within an hour.",
-      "error": "Something went wrong. Please call us."
+      "error": "Something went wrong. Please call us.",
+      "errors": {
+        "required": "This field is required",
+        "phoneTooShort": "Phone number is too short",
+        "tooLong": "Too long",
+        "invalidEmail": "Invalid email"
+      }
     },
     "phoneLabel": "Phone",
     "emailLabel": "Email"
