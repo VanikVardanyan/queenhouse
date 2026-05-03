@@ -14,27 +14,24 @@
   },
   "hero": {
     "title": "Silence and Lori mountains",
-    "subtitle": "Two A-frame cabins · Vardablur, Lori",
+    "subtitle": "Vardablur · Lori · Armenia",
     "primaryCta": "Contact",
     "secondaryCta": "See houses",
     "scrollHint": "Scroll down"
   },
   "about": {
     "kicker": "About",
-    "title": "Show must go on. In Lori.",
-    "p1": "Queen House is two A-frame wooden cabins in Vardablur village, Lori province of Armenia. Forests, Dzoraget canyon, and Stepanavan nearby — reasons to come and stay.",
-    "p2": "The name and logo are a quiet tribute to Queen and Freddie Mercury. We believe a great stay should feel like a show where you are the headliner."
+    "title": "Where it's quiet",
+    "p1": "Queen House — two A-frame wooden cabins in Vardablur, Lori. Forest around, Dzoraget canyon and Stepanavan nearby. A place for those who want silence and coffee with mountain views.",
+    "p2": "A-frame cabins among the pines. A jacuzzi under open sky. Fire and tea after sunset. Lori at its simplest."
   },
   "houses": {
     "kicker": "Our houses",
-    "title": "Two cabins, one character",
-    "house1": {
-      "name": "House №1 — The Crown",
-      "description": "A-frame cabin with heated jacuzzi and forest view."
-    },
-    "house2": {
-      "name": "House №2 — The Mercury",
-      "description": "Intimate cabin with fire pit area and mountain view."
+    "title": "Two cabins, one feel",
+    "description": "One for two guests, one for four. Same loft, same view, same fireside ritual.",
+    "capacity": {
+      "small": "up to 2 guests",
+      "large": "up to 4 guests"
     },
     "callCta": "Call to book"
   },
@@ -51,7 +48,7 @@
   },
   "gallery": {
     "kicker": "Gallery",
-    "title": "Through our eyes",
+    "title": "Frames",
     "openImage": "Open photo"
   },
   "location": {
